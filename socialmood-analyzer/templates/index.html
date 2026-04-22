@@ -1,0 +1,62 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold">Analysez le sentiment de votre texte</h2>
+      <p class="text-muted">Detectez si un texte est Positif, Neutre ou Negatif</p>
+    </div>
+    {% if erreur %}
+    <div class="alert alert-danger">{{ erreur }}</div>
+    {% endif %}
+    <div class="card p-4 mb-4">
+      <form method="POST" action="/analyze/">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label fw-bold">Votre texte :</label>
+          <textarea name="text" class="form-control" rows="5"
+            placeholder="Ex: I love this product!"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
+          Analyser le sentiment
+        </button>
+      </form>
+    </div>
+    {% if stats.total > 0 %}
+    <div class="row text-center mb-4">
+      <div class="col-4">
+        <div class="card p-3">
+          <h3 class="text-success">{{ stats.positifs }}</h3>
+          <p class="mb-0">Positifs</p>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card p-3">
+          <h3 class="text-warning">{{ stats.neutres }}</h3>
+          <p class="mb-0">Neutres</p>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card p-3">
+          <h3 class="text-danger">{{ stats.negatifs }}</h3>
+          <p class="mb-0">Negatifs</p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if historique %}
+    <div class="card p-4">
+      <h5 class="fw-bold mb-3">Analyses recentes</h5>
+      {% for item in historique %}
+      <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+        <span>{{ item.texte|truncatechars:50 }}</span>
+        <span class="badge bg-{% if item.sentiment == 'Positif' %}success{% elif item.sentiment == 'Negatif' %}danger{% else %}warning{% endif %}">
+          {{ item.sentiment }}
+        </span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<h4 class="fw-bold mb-4">Dashboard - Statistiques</h4>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card p-4">
+      <h5 class="fw-bold">Repartition des sentiments</h5>
+      <canvas id="sentimentChart"></canvas>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card p-4">
+      <h5 class="fw-bold">Dernieres analyses</h5>
+      {% for item in analyses|slice:":8" %}
+      <div class="d-flex justify-content-between border-bottom py-1">
+        <small>{{ item.texte|truncatechars:40 }}</small>
+        <span class="badge bg-{% if item.sentiment == 'Positif' %}success{% elif item.sentiment == 'Negatif' %}danger{% else %}warning{% endif %}">
+          {{ item.sentiment }}
+        </span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('sentimentChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: {{ labels|safe }},
+      datasets: [{
+        data: {{ data|safe }},
+        backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
+      }]
+    }
+  });
+</script>
+{% endblock %}

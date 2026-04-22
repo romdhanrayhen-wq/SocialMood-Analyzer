@@ -1,0 +1,46 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card p-5 text-center">
+      <div class="emoji-big mb-2">{{ result.emoji }}</div>
+      <h2 class="fw-bold text-{{ result.couleur }} mb-1">{{ result.sentiment }}</h2>
+      <p class="text-muted">Texte : <em>"{{ text|truncatechars:100 }}"</em></p>
+      <hr>
+      <p class="fw-bold">Score : {{ result.score }} <span class="text-muted">(entre -1 et +1)</span></p>
+      <div class="progress mb-3" style="height: 25px;">
+        <div class="progress-bar bg-{{ result.couleur }} fw-bold"
+             style="width: {{ result.confiance }}%">
+          Confiance : {{ result.confiance }}%
+        </div>
+      </div>
+      <div class="row text-center mt-2">
+        <div class="col-4">
+          <div class="p-2 bg-success bg-opacity-10 rounded">
+            <strong class="text-success">{{ result.detail.positif }}%</strong>
+            <br><small>Positif</small>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="p-2 bg-warning bg-opacity-10 rounded">
+            <strong class="text-warning">{{ result.detail.neutre }}%</strong>
+            <br><small>Neutre</small>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="p-2 bg-danger bg-opacity-10 rounded">
+            <strong class="text-danger">{{ result.detail.negatif }}%</strong>
+            <br><small>Negatif</small>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="d-flex gap-2 justify-content-center mt-2">
+        <a href="/" class="btn btn-primary">Analyser un autre texte</a>
+        <a href="/historique/" class="btn btn-outline-secondary">Historique</a>
+        <a href="/dashboard/" class="btn btn-outline-secondary">Dashboard</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
