@@ -1,0 +1,5 @@
+socialmood-analyzer/venv/
+socialmood-analyzer/__pycache__/
+socialmood-analyzer/*.pyc
+socialmood-analyzer/db.sqlite3
+.venv/
